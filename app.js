@@ -5,6 +5,10 @@ const Todo = require('./models/todo')
 // set localhost port
 const port = 3000
 
+// set body-parser
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: true }))
+
 // set db
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -24,7 +28,6 @@ const exphbs = require('express-handlebars')
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
-// static file
 
 
 // set route
@@ -35,6 +38,21 @@ app.get('/', (req, res) => {
     .lean() //mongoose轉JS可處理格式
     .then(todos => res.render('index', { todos })) //陣列傳到index
     .catch(err => console.error(err))
+})
+
+app.get('/todos/new', (req, res) => {
+  res.render('new')
+})
+
+app.post('/', (req, res) => {
+  const name = req.body.name
+  // const todo = new Todo({ name })
+  // todo.save()
+  //   .then(() => res.redirect('/'))
+  //   .catch(error => console.log(error))
+  Todo.create({name})
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
 })
 
 // start and listen
