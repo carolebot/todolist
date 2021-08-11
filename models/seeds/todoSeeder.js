@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Todo = require('../todo') //載入todo.js
-mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, userUnifiedTopology: true })
+mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true  })
 
 const db = mongoose.connection
 

@@ -1,16 +1,16 @@
 // set express and tools
 const express = require('express')
 const app = express()
-
+const Todo = require('./models/todo')
 // set localhost port
 const port = 3000
 
 // set db
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/todolist')
+mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
 
-db.once('open', ()=> {
+db.once('open', () => {
   console.log('mongodb connected')
 })
 
@@ -18,9 +18,10 @@ db.on('error', () => {
   console.log('mongodb err')
 })
 
+
 // set template engine
 const exphbs = require('express-handlebars')
-app.engine('handlebars', exphbs({defaultLayout: 'main'}))
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
 // static file
@@ -28,7 +29,12 @@ app.set('view engine', 'handlebars')
 
 // set route
 app.get('/', (req, res) => {
-  res.render('index')
+
+  // 拿到全部的todo資料
+  Todo.find()
+    .lean() //mongoose轉JS可處理格式
+    .then(todos => res.render('index', { todos })) //陣列傳到index
+    .catch(err => console.error(err))
 })
 
 // start and listen
