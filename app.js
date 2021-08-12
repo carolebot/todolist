@@ -5,9 +5,11 @@ const Todo = require('./models/todo')
 // set localhost port
 const port = 3000
 
+
 // set body-parser
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
+
 
 // set db
 const mongoose = require('mongoose')
@@ -91,6 +93,8 @@ app.post('/todos/:id/delete', (req, res) => {
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
+
+
 
 // start and listen
 app.listen(port, () => {
