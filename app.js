@@ -64,6 +64,27 @@ app.get('/todos/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
+app.get('/todos/:id/edit', (req, res) => {
+  const id = req.params.id
+  Todo.findById(id)
+    .lean()
+    .then((todo) => res.render('edit', { todo }))
+    .catch(error => console.log(error))
+})
+
+app.post('/todos/:id/edit', (req, res) => {
+  const id = req.params.id
+  const name = req.body.name
+  Todo.findById(id) 
+    .then(todo => {
+      todo.name = name
+      todo.save() //save是mongoose資料庫的方法
+    })
+    .then(()=> res.redirect(`/todos/${id}`))
+    .catch(error => console.log(error))  
+})
+
+
 // start and listen
 app.listen(port, () => {
   console.log(`running on http://localhost:${port}`)
