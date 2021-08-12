@@ -44,7 +44,7 @@ app.get('/todos/new', (req, res) => {
   res.render('new')
 })
 
-app.post('/', (req, res) => {
+app.post('/todos', (req, res) => {
   const name = req.body.name
   // const todo = new Todo({ name })
   // todo.save()
@@ -75,15 +75,22 @@ app.get('/todos/:id/edit', (req, res) => {
 app.post('/todos/:id/edit', (req, res) => {
   const id = req.params.id
   const name = req.body.name
-  Todo.findById(id) 
+  Todo.findById(id)
     .then(todo => {
       todo.name = name
       todo.save() //save是mongoose資料庫的方法
     })
-    .then(()=> res.redirect(`/todos/${id}`))
-    .catch(error => console.log(error))  
+    .then(() => res.redirect(`/todos/${id}`))
+    .catch(error => console.log(error))
 })
 
+app.post('/todos/:id/delete', (req, res) => {
+  const id = req.params.id
+  Todo.findById(id) //確保資料存在
+    .then(todo => todo.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
 
 // start and listen
 app.listen(port, () => {
