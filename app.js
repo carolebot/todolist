@@ -50,8 +50,17 @@ app.post('/', (req, res) => {
   // todo.save()
   //   .then(() => res.redirect('/'))
   //   .catch(error => console.log(error))
-  Todo.create({name})
+  Todo.create({ name })
     .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
+app.get('/todos/:id', (req, res) => {
+  const id = req.params.id
+  // console.log(id)
+  Todo.findById(id)
+    .lean()
+    .then((todo) => res.render('details', { todo }))
     .catch(error => console.log(error))
 })
 
