@@ -2,14 +2,17 @@
 const express = require('express')
 const app = express()
 const Todo = require('./models/todo')
+const methodOverride = require('method-override')
 // set localhost port
 const port = 3000
 
 
 // set body-parser
 const bodyParser = require('body-parser')
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
 
+// set methodOverride
+app.use(methodOverride('_method'))
 
 // set db
 const mongoose = require('mongoose')
@@ -76,7 +79,7 @@ app.get('/todos/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/todos/:id/edit', (req, res) => {
+app.put('/todos/:id', (req, res) => {
   const id = req.params.id
   // 解構賦值
   const {name, isDone} = req.body
@@ -90,7 +93,7 @@ app.post('/todos/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/todos/:id/delete', (req, res) => {
+app.delete('/todos/:id', (req, res) => {
   const id = req.params.id
   Todo.findById(id) //確保資料存在
     .then(todo => todo.remove())
