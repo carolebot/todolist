@@ -36,70 +36,9 @@ app.set('view engine', 'handlebars')
 
 
 // set route
-app.get('/', (req, res) => {
+const routes =require('./routes')
+app.use(routes)
 
-  // 拿到全部的todo資料
-  Todo.find()
-    .lean() //mongoose轉JS可處理格式
-    .sort({name: 'asc'}) //desc
-    .then(todos => res.render('index', { todos })) //陣列傳到index
-    .catch(err => console.error(err))
-})
-
-app.get('/todos/new', (req, res) => {
-  res.render('new')
-})
-
-app.post('/todos', (req, res) => {
-  const name = req.body.name
-  console.log(req.body)
-  // const todo = new Todo({ name })
-  // todo.save()
-  //   .then(() => res.redirect('/'))
-  //   .catch(error => console.log(error))
-  Todo.create({ name })
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
-})
-
-app.get('/todos/:id', (req, res) => {
-  const id = req.params.id
-  // console.log(id)
-  Todo.findById(id)
-    .lean()
-    .then((todo) => res.render('details', { todo }))
-    .catch(error => console.log(error))
-})
-
-app.get('/todos/:id/edit', (req, res) => {
-  const id = req.params.id
-  Todo.findById(id)
-    .lean()
-    .then((todo) => res.render('edit', { todo }))
-    .catch(error => console.log(error))
-})
-
-app.put('/todos/:id', (req, res) => {
-  const id = req.params.id
-  // 解構賦值
-  const {name, isDone} = req.body
-  Todo.findById(id)
-    .then(todo => {
-      todo.name = name
-      todo.isDone = isDone ==='on'   
-      todo.save() //save是mongoose資料庫的方法
-    })
-    .then(() => res.redirect(`/todos/${id}`))
-    .catch(error => console.log(error))
-})
-
-app.delete('/todos/:id', (req, res) => {
-  const id = req.params.id
-  Todo.findById(id) //確保資料存在
-    .then(todo => todo.remove())
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
-})
 
 
 
