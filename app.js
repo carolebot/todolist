@@ -48,6 +48,7 @@ app.get('/todos/new', (req, res) => {
 
 app.post('/todos', (req, res) => {
   const name = req.body.name
+  console.log(req.body)
   // const todo = new Todo({ name })
   // todo.save()
   //   .then(() => res.redirect('/'))
@@ -76,10 +77,12 @@ app.get('/todos/:id/edit', (req, res) => {
 
 app.post('/todos/:id/edit', (req, res) => {
   const id = req.params.id
-  const name = req.body.name
+  // 解構賦值
+  const {name, isDone} = req.body
   Todo.findById(id)
     .then(todo => {
       todo.name = name
+      todo.isDone = isDone ==='on'   
       todo.save() //save是mongoose資料庫的方法
     })
     .then(() => res.redirect(`/todos/${id}`))
