@@ -1,9 +1,8 @@
 {{!-- todos:todos --}}
 
-<a href="./todos/new">Create</a>
 <ul>
   {{#each todos}}
-  <li>
+  <li style="list-style: none;">
     <input type="checkbox" name="isDone" {{#if this.isDone}}checked {{/if}} disabled>
     {{ this.name }}
     <a href="./todos/{{this._id}}">details</a>
