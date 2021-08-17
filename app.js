@@ -5,7 +5,7 @@ const methodOverride = require('method-override')
 
 
 // set localhost port
-const port = 3000
+const PORT = process.env.PORT || 3000
 
 
 // set body-parser
@@ -33,8 +33,8 @@ app.set('view engine', 'handlebars')
 
 
 // start and listen
-app.listen(port, () => {
-  console.log(`running on http://localhost:${port}`)
+app.listen(PORT, () => {
+  console.log(`running on http://localhost:${PORT}`)
 })
 
 
