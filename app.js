@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const session = require('express-session')
 const methodOverride = require('method-override')
-
+const usePassport = require('./config/passport')
 // set localhost port
 const PORT = process.env.PORT || 3000
 
@@ -16,9 +16,12 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
 
-// set route
-const routes = require('./routes')
-app.use(routes)
+// use passport 
+usePassport(app)
+
+
+// set db
+require('./config/mongoose')
 
 
 // express-session
@@ -28,9 +31,9 @@ app.use(session({
   saveUninitialized: true
 }))
 
-
-// set db
-require('./config/mongoose')
+// set route
+const routes = require('./routes')
+app.use(routes)
 
 
 // set template engine
