@@ -6,12 +6,19 @@ router.get('/login', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-  const { email, password } = req.body
   console.log(req.body)
+  const { email, password } = req.body
+  res.render('./')
 })
 
 router.get('/register', (req, res) => {
   res.render('register')
+})
+
+router.post('/register', (req, res) => {
+  console.log(req.body)
+  const { name, email, password, confirmPassword } = req.body
+  res.render('./')
 })
 
 module.exports = router
