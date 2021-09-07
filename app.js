@@ -31,6 +31,12 @@ app.use(session({
 // use passport 
 usePassport(app)
 
+// 參數放到畫面的處理
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  next()
+})
 
 // set route
 const routes = require('./routes')
