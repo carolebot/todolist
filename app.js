@@ -16,10 +16,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
 
-// use passport 
-usePassport(app)
-
-
 // set db
 require('./config/mongoose')
 
@@ -30,6 +26,11 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
+
+
+// use passport 
+usePassport(app)
+
 
 // set route
 const routes = require('./routes')
