@@ -4,6 +4,7 @@ const app = express()
 const session = require('express-session')
 const methodOverride = require('method-override')
 const usePassport = require('./config/passport')
+const flash = require('connect-flash')
 // set localhost port
 const PORT = process.env.PORT || 3000
 
@@ -27,14 +28,18 @@ app.use(session({
   saveUninitialized: true
 }))
 
-
 // use passport 
 usePassport(app)
+
+// use connect-flash
+app.use(flash())
 
 // 參數放到畫面的處理
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated()
   res.locals.user = req.user
+  res.locals.success_msg = req.flash('success_msg') 
+  res.locals.warning_msg = req.flash('warning_msg')
   next()
 })
 
