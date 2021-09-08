@@ -3,7 +3,7 @@ const router = express.Router()
 const User = require('../../models/user')
 
 const passport = require('passport')
-
+const bcrypt = require('bcryptjs')
 router.get('/login', (req, res) => {
   res.render('login')
 })
@@ -30,7 +30,6 @@ router.post('/register', (req, res) => {
   if (password !== confirmPassword) {
     errors.push({ message: '密碼確認有誤' })
   }
-  console.log(errors)
 
   if (errors.length) {
     return res.render('register', {
@@ -55,12 +54,20 @@ router.post('/register', (req, res) => {
         confirmPassword
       })
     }
-    // 如果還沒註冊：寫入資料庫
-    return User.create({
-      name,
-      email,
-      password
-    })
+    // 如果還沒註冊：加密後寫入資料庫
+    return bcrypt
+      .genSalt(10)
+      //hash密碼 加上salt
+      .then(salt => { 
+        console.log('salt:', salt)
+        return bcrypt.hash(password, salt)
+      })
+      // 用了hash會拿到hash的密碼
+      .then(hash => User.create({
+        name,
+        email,
+        password: hash
+      }))
       .then(() => res.redirect('/'))
       .catch(err => console.log(err))
   })
