@@ -5,9 +5,12 @@ const session = require('express-session')
 const methodOverride = require('method-override')
 const usePassport = require('./config/passport')
 const flash = require('connect-flash')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+console.log(process.env)
 // set localhost port
-const PORT = process.env.PORT || 3000
-
+const PORT = process.env.PORT
 
 // set body-parser
 app.use(express.urlencoded({ extended: true }))
@@ -23,7 +26,7 @@ require('./config/mongoose')
 
 // express-session
 app.use(session({
-  secret: 'ThisIsMySecret',
+  secret: process.env.SESSION_SECRECT,
   resave: false,
   saveUninitialized: true
 }))
@@ -38,7 +41,7 @@ app.use(flash())
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated()
   res.locals.user = req.user
-  res.locals.success_msg = req.flash('success_msg') 
+  res.locals.success_msg = req.flash('success_msg')
   res.locals.warning_msg = req.flash('warning_msg')
   next()
 })
