@@ -9,7 +9,6 @@ router.get('/new', (req, res) => {
 router.post('/', (req, res) => {
   const name = req.body.name
   const userId = req.user._id
-  console.log(req.body)
   // const todo = new Todo({ name })
   // todo.save()
   //   .then(() => res.redirect('/'))

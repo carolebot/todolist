@@ -59,7 +59,6 @@ router.post('/register', (req, res) => {
       .genSalt(10)
       //hash密碼 加上salt
       .then(salt => { 
-        console.log('salt:', salt)
         return bcrypt.hash(password, salt)
       })
       // 用了hash會拿到hash的密碼
